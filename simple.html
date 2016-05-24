@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<title>Simple PaymentRequest</title>
+<script>
+function buy() {
+  var supportedInstruments = [
+    'visa',
+    'mastercard',
+    'amex',
+    'discover'
+  ];
+
+  var details = {
+    items: [
+      {
+        id: 'shipping',
+        label: 'Free shipping',
+        amount: {currencyCode: 'USD', value: '0.00'}
+      },
+      {
+        id: 'total',
+        label: 'Total',
+        amount: {currencyCode: 'USD', value: '50.00'}
+      }
+    ],
+    shippingOptions: [
+      {
+        id: 'shipping',
+        label: 'Free shipping',
+        amount: {currencyCode: 'USD', value: '0.00'}
+      }
+    ]
+  };
+
+  var options = { requestShipping: true };
+
+  try {
+    var request = new PaymentRequest(supportedInstruments, details, options);
+    request.show().then(function(paymentResponse) {
+    	log("methodName: " + paymentResponse.methodName);
+    	log("details: " + JSON.stringify(paymentResponse.details));
+        instrumentResponse.complete(true)
+            .then(function() {
+            	log("Done.");
+            })
+            .catch(function(err) {
+              log("complete error: " + err.message);
+            });
+    })
+    .catch(function(err) {
+      log("Show error: " + err.message);
+    });
+  } catch (e) {
+    log('Exception: \'' + e.message + '\'');
+  }
+}
+
+function log(s) {
+	var e = document.getElementById("output");
+	e.innerHTML += s + "<br>";
+}
+</script>
+</head>
+<body>
+	<p><a href="index.html">Index</a></p>
+	<p><button onClick="buy()">Buy</button></p>
+	<div id="output"></div>
+</body>
+</html>
