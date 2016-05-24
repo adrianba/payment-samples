@@ -49,7 +49,7 @@ function buy() {
     request.show().then(function(paymentResponse) {
     	log("methodName: " + paymentResponse.methodName);
     	log("details: " + JSON.stringify(paymentResponse.details));
-        instrumentResponse.complete(true)
+        paymentResponse.complete(true)
             .then(function() {
             	log("Done.");
             })
